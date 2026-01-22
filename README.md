@@ -71,8 +71,6 @@ peframe -s filename         # Strings output
 
 ### Note
 
-You can edit the `config-peframe.json` file located in the `config/` folder to configure your VirusTotal API key.
-
 After installation, use:
 
 ```bash

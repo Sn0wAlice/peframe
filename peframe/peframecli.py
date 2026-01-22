@@ -17,12 +17,10 @@ for path in sys.path:
 if portable:
 	import peframe
 	from modules import autocomplete
-	from modules import virustotal
 	from modules import features
 else:
 	from peframe import peframe
 	from peframe.modules import autocomplete
-	from peframe.modules import virustotal
 	from peframe.modules import features
 
 # TODO
@@ -64,25 +62,6 @@ def interactive_mode():
 				print (json.dumps(result['peinfo']['behavior'], sort_keys=True, indent=4))
 			if result['docinfo']:
 				print (json.dumps(result['docinfo']['behavior'], sort_keys=True, indent=4))
-		elif user_input == 'virustotal':
-			try:
-				vt = virustotal.get_result(peframe.load_config(peframe.path_to_file('config-peframe.json', 'config'))['virustotal'], 
-					result['hashes']['md5'], full=True)
-				if vt['response_code'] == 200:
-					print (json.dumps(cmd_list_select['virustotal'], sort_keys=True, indent=4))
-					print ('\nUse \'back\' to return')
-					while 1:
-						user_input_virustotal = autocomplete.get_result(cmd_list_select['virustotal'], "[peframe/virustotal]>")
-						if user_input_virustotal == 'back':
-							break
-						elif user_input_virustotal == 'permalink':
-							print (vt['results']['permalink'])
-						elif user_input_virustotal == 'antivirus':
-							print (json.dumps(vt['results']['scans'], sort_keys=True, indent=4))
-						elif user_input_virustotal == 'scan_date':
-							print (vt['results']['scan_date'])
-			except:
-				print ('VT Query error')
 
 		# directories
 		elif user_input == 'directories':
@@ -184,9 +163,6 @@ def get_info():
 	print ("filesize".ljust(align, ' '), result['filesize'])
 	print ("hash sha256".ljust(align, ' '), result['hashes']['sha256'])
 	cmd_list.append('hashes')
-
-	print ("virustotal".ljust(align, ' '), str(result['virustotal']['positives']) +'/'+ str(result['virustotal']['total']))
-	cmd_list_select.update({"virustotal": ['permalink', 'antivirus', 'scan_date']})
 
 	# peinfo
 	if result['peinfo']:
@@ -301,7 +277,7 @@ if args.strings:
 	sys.exit()
 
 align = 16
-cmd_list = ['info', 'strings', 'exit', 'virustotal']
+cmd_list = ['info', 'strings', 'exit']
 cmd_list_select = {}
 
 if args.interactive:
