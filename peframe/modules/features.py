@@ -18,8 +18,8 @@ def xor_delta(s, key_len = 1):
 		delta[x - key_len] ^= delta[x]
 		 
 	""" return the delta as a string """
-	return delta.tostring()[:-key_len]
- 
+	return delta.tobytes()[:-key_len]
+
 def get_xor(filename, search_string=False):
 	xorsearch_custom = False
 	check = {}
@@ -32,11 +32,11 @@ def get_xor(filename, search_string=False):
 		str(search_string)
 		xorsearch_custom = True
 	is_xored = False
-	 
+
 	for l in key_lengths:
 		key_delta = xor_delta(search_string, l)
 		doc_delta = xor_delta(search_file, l)
-		 
+
 		offset = -1
 		while(True):
 			offset += 1
@@ -68,7 +68,7 @@ import re
 def get_antivm(filename):
 
 	result = {}
-	
+
 	# Credit: Joxean Koret
 	VM_Sign = {
 		"VMware trick": b"VMXh",
@@ -81,7 +81,7 @@ def get_antivm(filename):
 		"Torpig VMM Trick": b"\xE8\xED\xFF\xFF\xFF\x25\x00\x00\x00\xFF\x33\xC9\x3D\x00\x00\x00\x80\x0F\x95\xC1\x8B\xC1\xC3",
 		"Torpig (UPX) VMM Trick": b"\x51\x51\x0F\x01\x27\x00\xC1\xFB\xB5\xD5\x35\x02\xE2\xC3\xD1\x66\x25\x32\xBD\x83\x7F\xB7\x4E\x3D\x06\x80\x0F\x95\xC1\x8B\xC1\xC3"
 		}
-		
+
 	with open(filename, "rb") as f:
 		buf = f.read()
 
@@ -112,4 +112,3 @@ def get_result(pe, filename):
 		"crypto": yara_check.yara_match_from_file(path_to_file('crypto_signatures.yar', '../signatures/yara_plugins/pe'), filename),
 	})
 	return features
-

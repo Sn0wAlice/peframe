@@ -22,7 +22,6 @@ if portable:
 	from modules import apialert
 	from modules import yara_check
 	from modules import meta
-	from modules import virustotal
 	from modules import sections
 	from modules import fileurl
 	from modules import macro
@@ -32,7 +31,6 @@ else:
 	from peframe.modules import apialert
 	from peframe.modules import yara_check
 	from peframe.modules import meta
-	from peframe.modules import virustotal
 	from peframe.modules import sections
 	from peframe.modules import fileurl
 	from peframe.modules import macro
@@ -115,10 +113,6 @@ def analyze(filename):
 		"filetype": filetype(filename),
 		"filesize": filesize(filename),
 		"hashes": gethash(filename),
-		"virustotal": virustotal.get_result(
-			load_config(
-				path_to_file('config-peframe.json', 'config'))['virustotal'], 
-			gethash(filename)['md5']),
 		"strings": fileurl.get_result(filename, load_config(path_to_file('stringsmatch.json', 'signatures'))),
 		}
 
